@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "revisiting-neural-thickets"
+version = "0.1.0"
+description = "Code and data for Does Random Search Discover Task Experts? Revisiting Neural Thickets"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11,<3.13"
+authors = [
+  {name = "Julian Asilis"},
+  {name = "Guanzhe Hong"},
+  {name = "Vatsal Sharan"},
+]
+classifiers = ["License :: OSI Approved :: MIT License"]
+dependencies = [
+  "matplotlib>=3.8,<4",
+  "numpy>=1.26,<3",
+  "PyYAML>=6,<7",
+]
+
+[project.optional-dependencies]
+experiments = [
+  "datasets==3.6.0",
+  "huggingface-hub==0.36.0",
+  "pandas==2.2.3",
+  "pyarrow==20.0.0",
+  "ray==2.56.1",
+  "safetensors==0.4.5",
+  "tokenizers==0.22.2",
+  "torch==2.9.1",
+  "transformers==4.57.6",
+  "vllm==0.16.0",
+]
+test = [
+  "pytest>=8,<10",
+  "ruff>=0.9,<1",
+]
+
+[project.scripts]
+neural-thickets-run = "neural_thickets.experiments.runner:main"
+
+[tool.setuptools]
+license-files = ["LICENSE", "LICENSE-APACHE"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+neural_thickets = ["configs/*.yaml"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+

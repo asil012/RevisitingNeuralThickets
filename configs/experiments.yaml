@@ -1,0 +1,562 @@
+schema_version: 1
+reference_commit: 536df0a308f3990b6270c991fbb96bd0b779a58e
+
+models:
+  olmo_7b: {model_id: allenai/Olmo-3-7B-Instruct, revision: 6e5971d9eba42665f5bd5a0fcf047f299ce1dccc, tensor_parallel_size: 1}
+  qwen_0_5b: {model_id: Qwen/Qwen2.5-0.5B-Instruct, revision: 7ae557604adf67be50417f59c2c2f167def9a775, tensor_parallel_size: 1}
+  qwen_1_5b: {model_id: Qwen/Qwen2.5-1.5B-Instruct, revision: 989aa7980e4cf806f80c7fef2b1adb7bc71aa306, tensor_parallel_size: 1}
+  qwen_3b: {model_id: Qwen/Qwen2.5-3B-Instruct, revision: aa8e72537993ba99e69dfaafa59ed015b17504d1, tensor_parallel_size: 1}
+  qwen_7b: {model_id: Qwen/Qwen2.5-7B-Instruct, revision: a09a35458c702b33eeacc393d103063234e8bc28, tensor_parallel_size: 1}
+  qwen_32b: {model_id: Qwen/Qwen2.5-32B-Instruct, revision: 5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd, tensor_parallel_size: 2}
+
+datasets:
+  countdown_primary: &countdown_primary
+    task: countdown
+    source: https://raw.githubusercontent.com/VsonicV/es-fine-tuning-paper/a644917e71ff170a408305a668b31274067f760e/archive/countdown/data/countdown.json
+    source_revision: f1b5c5865d9f4bc517991740175f14f6869a2f8e4b00f8602f4655fdc6ccd8ba
+    file_sha256:
+      countdown.json: f1b5c5865d9f4bc517991740175f14f6869a2f8e4b00f8602f4655fdc6ccd8ba
+    selection_split: test
+    test_split: test
+    selection_qids: [0, 200]
+    test_qids: [200, 1600]
+    evaluation_qid_ranges: []
+    max_tokens: 1024
+  countdown_wave1_grid:
+    <<: *countdown_primary
+    selection_qids: [0, 1000]
+    test_qids: [1000, 1600]
+    evaluation_qid_ranges: [[0, 1600]]
+  countdown_reference_full:
+    <<: *countdown_primary
+    test_qids: [200, 2200]
+  density_countdown:
+    <<: *countdown_primary
+    evaluation_qid_ranges: [[200, 1600]]
+  gsm8k_primary:
+    task: gsm8k
+    source: openai/gsm8k
+    source_revision: 740312add88f781978c0658806c59bc2815b9866
+    file_sha256: {}
+    selection_split: train
+    test_split: test
+    selection_qids: [0, 200]
+    test_qids: [1000000, 1001319]
+    evaluation_qid_ranges: []
+    max_tokens: 1024
+  gsm8k_wave_grid:
+    task: gsm8k
+    source: openai/gsm8k
+    source_revision: 740312add88f781978c0658806c59bc2815b9866
+    file_sha256: {}
+    selection_split: train
+    test_split: test
+    selection_qids: [0, 1000]
+    test_qids: [1000000, 1001319]
+    evaluation_qid_ranges: [[0, 1000], [1000000, 1001319]]
+    max_tokens: 1024
+  density_gsm8k:
+    task: gsm8k
+    source: openai/gsm8k
+    source_revision: 740312add88f781978c0658806c59bc2815b9866
+    file_sha256: {}
+    selection_split: train
+    test_split: test
+    selection_qids: [0, 200]
+    test_qids: [1000000, 1001319]
+    evaluation_qid_ranges: [[1000000, 1001319]]
+    max_tokens: 1024
+  mbpp_primary:
+    task: mbpp
+    source: google-research-datasets/mbpp
+    source_revision: 4bb6404fdc6cacfda99d4ac4205087b89d32030c
+    file_sha256: {}
+    selection_split: combined
+    test_split: combined
+    selection_qids: [0, 200]
+    test_qids: [464, 964]
+    evaluation_qid_ranges: []
+    max_tokens: 2048
+  mbpp_wave_grid:
+    task: mbpp
+    source: google-research-datasets/mbpp
+    source_revision: 4bb6404fdc6cacfda99d4ac4205087b89d32030c
+    file_sha256: {}
+    selection_split: combined
+    test_split: combined
+    selection_qids: [0, 400]
+    test_qids: [400, 964]
+    evaluation_qid_ranges: [[0, 964]]
+    max_tokens: 2048
+  mbpp_reference_full:
+    task: mbpp
+    source: google-research-datasets/mbpp
+    source_revision: 4bb6404fdc6cacfda99d4ac4205087b89d32030c
+    file_sha256: {}
+    selection_split: combined
+    test_split: combined
+    selection_qids: [0, 200]
+    test_qids: [200, 964]
+    evaluation_qid_ranges: []
+    max_tokens: 2048
+  density_mbpp:
+    task: mbpp
+    source: google-research-datasets/mbpp
+    source_revision: 4bb6404fdc6cacfda99d4ac4205087b89d32030c
+    file_sha256: {}
+    selection_split: combined
+    test_split: combined
+    selection_qids: [0, 200]
+    test_qids: [464, 964]
+    evaluation_qid_ranges: [[200, 400], [464, 964]]
+    max_tokens: 2048
+  uspto50k_primary:
+    task: uspto50k
+    source: pingzhili/uspto-50k
+    source_revision: 8296db0b791758743cb8efb5d62cc10d03c2b988
+    file_sha256:
+      train.parquet: 5050f5598583b2d0c6033a01c61fa14702455ccbe908a2d9fcfe00f7415e86bc
+      validation.parquet: 48eb1bd375edbd291704bb127114fc0df4dd654c388a241aa755f887a0e9b617
+      source_train.parquet: 53542c1620fee15f6b89d1958639b518e72499479a29411c64d0cb400dbfbade
+      source_validation.parquet: 9cb4381b2235a7c5815c0e881593c324f244a6533a0d770d4598669f669a22d9
+    selection_split: train
+    test_split: validation
+    selection_qids: [0, 200]
+    test_qids: [1000000, 1001001]
+    evaluation_qid_ranges: []
+    max_tokens: 1024
+
+decodes:
+  greedy: &greedy
+    temperature: 0.0
+    top_p: 1.0
+    top_k: -1
+    repetition_penalty: 1.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
+    seed: 42
+  sampled_anchor:
+    <<: *greedy
+    temperature: 0.6
+    top_p: 0.95
+
+runtimes:
+  isambard_audit:
+    python: not-recorded
+    vllm: 0.16.0
+    torch: 2.9.1+cu126
+    ray: 2.56.1
+    transformers: not-recorded
+    tokenizers: not-recorded
+    numpy: not-recorded
+  runpod_20260922:
+    python: 3.12.13
+    vllm: 0.16.0
+    torch: 2.9.1+cu128
+    ray: 2.56.1
+    transformers: 4.57.6
+    tokenizers: 0.22.2
+    numpy: 2.2.6
+  chemistry_runpod:
+    python: not-recorded
+    vllm: 0.16.0
+    torch: not-recorded
+    ray: not-recorded
+    transformers: not-recorded
+    tokenizers: not-recorded
+    numpy: not-recorded
+
+engines:
+  isambard_tp1:
+    workers: 4
+    max_model_len: null
+    max_num_seqs: null
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.75
+    enforce_eager: true
+    enable_prefix_caching: false
+  isambard_q32:
+    workers: 2
+    max_model_len: null
+    max_num_seqs: null
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.55
+    enforce_eager: true
+    enable_prefix_caching: false
+  chemistry_h200:
+    workers: 2
+    max_model_len: null
+    max_num_seqs: null
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.75
+    enforce_eager: true
+    enable_prefix_caching: false
+  runpod_olmo:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 32
+    max_num_batched_tokens: 4096
+    prompt_batch_size: 64
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  runpod_olmo930:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 32
+    max_num_batched_tokens: 4096
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  runpod_q3:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 128
+    max_num_batched_tokens: 8192
+    prompt_batch_size: 128
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  runpod_q7:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 96
+    max_num_batched_tokens: 8192
+    prompt_batch_size: 128
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  runpod_q32:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 256
+    max_num_batched_tokens: 8192
+    prompt_batch_size: 256
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  density_q05:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 512
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  density_q15:
+    workers: 1
+    max_model_len: 8192
+    max_num_seqs: 384
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  density_olmo:
+    workers: 1
+    max_model_len: 4096
+    max_num_seqs: 192
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+  density_q32:
+    workers: 1
+    max_model_len: 4096
+    max_num_seqs: 256
+    max_num_batched_tokens: null
+    prompt_batch_size: 200
+    gpu_memory_utilization: 0.90
+    enforce_eager: true
+    enable_prefix_caching: false
+
+experiments:
+  search_olmo_countdown: &primary_search
+    kind: search
+    model: olmo_7b
+    dataset: countdown_primary
+    additional_datasets: []
+    decode: greedy
+    batching: full_pool
+    runtime: isambard_audit
+    engine: isambard_tp1
+    semantics: paper_tied_exact
+    search_scope: select_then_test
+    anchor_storage: same_device
+    population_size: 5000
+    population_draw_size: 5000
+    population_seed: 42
+    sigma_ladder: [0.0005, 0.001, 0.002]
+    candidate_filter_sigma: null
+    candidate_limit: null
+    top_k: 50
+    repeat_seeds: []
+    samples_per_question: 1
+    candidate_indices: []
+    candidate_cohorts: {}
+    canonical_selected_indices: []
+    source_search: null
+    shuffle_seed: null
+    selection_metric: reference_reward
+    aggregation_seed: null
+    aggregation_orderings: 0
+    aggregation_budgets: [10, 20, 50]
+    aggregation_strategy: null
+    summary_scope: paper
+  search_olmo_gsm8k: {<<: *primary_search, dataset: gsm8k_wave_grid, search_scope: full_grid, top_k: 0}
+  search_olmo_mbpp: {<<: *primary_search, dataset: mbpp_wave_grid, search_scope: full_grid, top_k: 0}
+  search_olmo_uspto50k:
+    <<: *primary_search
+    dataset: uspto50k_primary
+    runtime: chemistry_runpod
+    engine: chemistry_h200
+    top_k: 500
+  search_qwen3b_countdown: &q3_search {<<: *primary_search, model: qwen_3b, dataset: countdown_wave1_grid, search_scope: full_grid, top_k: 0}
+  search_qwen3b_gsm8k: {<<: *q3_search, dataset: gsm8k_wave_grid}
+  search_qwen3b_mbpp: {<<: *q3_search, dataset: mbpp_wave_grid}
+  search_qwen7b_countdown: &q7_search {<<: *primary_search, model: qwen_7b, dataset: countdown_wave1_grid, search_scope: full_grid, top_k: 0}
+  search_qwen7b_gsm8k: {<<: *q7_search, dataset: gsm8k_wave_grid}
+  search_qwen7b_mbpp: {<<: *q7_search, dataset: mbpp_wave_grid}
+  search_qwen32b_countdown: &q32_search
+    <<: *primary_search
+    model: qwen_32b
+    engine: isambard_q32
+    population_size: 1000
+    canonical_selected_indices: [958, 76, 318, 32, 731, 30, 71, 135, 532, 273, 189, 480, 250, 373, 342, 8, 262, 889, 808, 17, 697, 759, 333, 400, 406, 407, 737, 36, 383, 973, 612, 570, 332, 193, 102, 291, 341, 519, 119, 814, 309, 197, 404, 726, 490, 823, 671, 204, 920, 385]
+  search_qwen32b_gsm8k: {<<: *q32_search, dataset: gsm8k_wave_grid, search_scope: full_grid, top_k: 0, canonical_selected_indices: []}
+  search_qwen32b_mbpp: {<<: *q32_search, dataset: mbpp_wave_grid, search_scope: full_grid, top_k: 0, canonical_selected_indices: []}
+
+  headline_olmo_countdown_fixed_sigma:
+    <<: *primary_search
+    dataset: countdown_wave1_grid
+    runtime: runpod_20260922
+    engine: runpod_olmo930
+    batching: fixed_chunks
+    search_scope: full_grid
+    anchor_storage: cpu
+    candidate_filter_sigma: 0.001
+    candidate_limit: 1000
+    top_k: 0
+
+  audit_tied_countdown_full_grid:
+    <<: *primary_search
+    dataset: countdown_wave1_grid
+    search_scope: full_grid
+    candidate_limit: 1000
+    top_k: 0
+  audit_iid_countdown_full_grid:
+    <<: *primary_search
+    dataset: countdown_wave1_grid
+    semantics: iid_exact
+    search_scope: full_grid
+    candidate_limit: 500
+    top_k: 0
+  candidate930_repeats:
+    <<: *primary_search
+    kind: candidate_repeat
+    dataset: countdown_reference_full
+    runtime: runpod_20260922
+    engine: runpod_olmo930
+    batching: fixed_chunks
+    anchor_storage: cpu
+    search_scope: null
+    top_k: 0
+    repeat_seeds: [42, 43, 44, 45, 46]
+    candidate_indices: [930]
+    selection_metric: null
+    aggregation_seed: null
+    aggregation_orderings: 0
+    aggregation_budgets: []
+    aggregation_strategy: null
+    summary_scope: generated
+
+  candidate930_anchor_repeats:
+    kind: anchor
+    model: olmo_7b
+    dataset: countdown_reference_full
+    additional_datasets: []
+    decode: greedy
+    batching: fixed_chunks
+    runtime: runpod_20260922
+    engine: runpod_olmo930
+    semantics: null
+    search_scope: null
+    anchor_storage: none
+    population_size: null
+    population_draw_size: null
+    population_seed: null
+    sigma_ladder: []
+    candidate_filter_sigma: null
+    candidate_limit: null
+    top_k: 0
+    repeat_seeds: [42, 43, 44, 45, 46]
+    samples_per_question: 1
+    candidate_indices: []
+    candidate_cohorts: {}
+    canonical_selected_indices: []
+    source_search: null
+    shuffle_seed: null
+    selection_metric: null
+    aggregation_seed: null
+    aggregation_orderings: 0
+    aggregation_budgets: []
+    aggregation_strategy: null
+    summary_scope: generated
+
+  fresh_anchor_olmo_suite: &fresh_anchor
+    kind: anchor
+    model: olmo_7b
+    dataset: countdown_primary
+    additional_datasets: [gsm8k_primary, mbpp_primary]
+    decode: greedy
+    batching: fixed_chunks
+    runtime: runpod_20260922
+    engine: runpod_olmo
+    semantics: null
+    search_scope: null
+    anchor_storage: none
+    population_size: null
+    population_draw_size: null
+    population_seed: null
+    sigma_ladder: []
+    candidate_filter_sigma: null
+    candidate_limit: null
+    top_k: 0
+    repeat_seeds: [42, 43, 44, 45, 46]
+    samples_per_question: 1
+    candidate_indices: []
+    candidate_cohorts: {}
+    canonical_selected_indices: []
+    source_search: null
+    shuffle_seed: null
+    selection_metric: null
+    aggregation_seed: null
+    aggregation_orderings: 0
+    aggregation_budgets: []
+    aggregation_strategy: null
+    summary_scope: paper
+  fresh_anchor_qwen3b_suite: {<<: *fresh_anchor, model: qwen_3b, engine: runpod_q3}
+  fresh_anchor_qwen7b_suite: {<<: *fresh_anchor, model: qwen_7b, engine: runpod_q7}
+  fresh_anchor_qwen32b_suite: {<<: *fresh_anchor, model: qwen_32b, engine: runpod_q32}
+
+  density_greedy_anchor_qwen05b_suite: &density_greedy_anchor
+    <<: *fresh_anchor
+    model: qwen_0_5b
+    dataset: density_countdown
+    additional_datasets: [density_gsm8k, mbpp_primary]
+    runtime: isambard_audit
+    engine: isambard_tp1
+    batching: contiguous_worker_shard
+    repeat_seeds: [42]
+  density_greedy_anchor_qwen15b_suite: {<<: *density_greedy_anchor, model: qwen_1_5b}
+  density_greedy_anchor_qwen3b_suite: {<<: *density_greedy_anchor, model: qwen_3b}
+  density_greedy_anchor_qwen7b_suite: {<<: *density_greedy_anchor, model: qwen_7b}
+  density_greedy_anchor_qwen32b_suite: {<<: *density_greedy_anchor, model: qwen_32b, engine: isambard_q32}
+
+  ttmv_olmo_countdown: &ttmv
+    <<: *fresh_anchor
+    dataset: countdown_reference_full
+    additional_datasets: []
+    decode: sampled_anchor
+    runtime: isambard_audit
+    engine: isambard_tp1
+    batching: contiguous_worker_shard
+    repeat_seeds: [42]
+    samples_per_question: 50
+    aggregation_seed: [20260908]
+    aggregation_orderings: 20
+    aggregation_budgets: [1, 10, 20, 50]
+    aggregation_strategy: legacy_olmo_countdown
+  ttmv_olmo_gsm8k: {<<: *ttmv, dataset: gsm8k_primary, samples_per_question: 100, aggregation_seed: [20260910, 0, 1], aggregation_budgets: [10, 20, 50], aggregation_strategy: seed_sequence}
+  ttmv_olmo_mbpp: {<<: *ttmv, dataset: mbpp_reference_full, samples_per_question: 100, aggregation_seed: [20260910, 1, 1], aggregation_budgets: [10, 20, 50], aggregation_strategy: seed_sequence}
+  ttmv_qwen3b_countdown: &ttmv_q3 {<<: *ttmv, model: qwen_3b, samples_per_question: 100, aggregation_seed: [20260910, 9, 1], aggregation_budgets: [10, 20, 50], aggregation_strategy: seed_sequence}
+  ttmv_qwen3b_gsm8k: {<<: *ttmv_q3, dataset: gsm8k_primary, aggregation_seed: [20260910, 2, 1]}
+  ttmv_qwen3b_mbpp: {<<: *ttmv_q3, dataset: mbpp_reference_full, aggregation_seed: [20260910, 3, 1]}
+  ttmv_qwen7b_countdown: &ttmv_q7 {<<: *ttmv, model: qwen_7b, samples_per_question: 100, aggregation_seed: [20260910, 6, 1], aggregation_budgets: [10, 20, 50], aggregation_strategy: seed_sequence}
+  ttmv_qwen7b_gsm8k: {<<: *ttmv_q7, dataset: gsm8k_primary, aggregation_seed: [20260910, 4, 1]}
+  ttmv_qwen7b_mbpp: {<<: *ttmv_q7, dataset: mbpp_reference_full, aggregation_seed: [20260910, 5, 1]}
+  ttmv_qwen32b_countdown: &ttmv_q32 {<<: *ttmv, model: qwen_32b, engine: isambard_q32, samples_per_question: 100, aggregation_seed: [20260910, 10, 1], aggregation_budgets: [10, 20, 50], aggregation_strategy: seed_sequence}
+  ttmv_qwen32b_gsm8k: {<<: *ttmv_q32, dataset: gsm8k_primary, aggregation_seed: [20260910, 7, 1]}
+  ttmv_qwen32b_mbpp: {<<: *ttmv_q32, dataset: mbpp_reference_full, aggregation_seed: [20260910, 8, 1]}
+
+  density_qwen05b_countdown: &density_q05
+    <<: *primary_search
+    model: qwen_0_5b
+    dataset: density_countdown
+    runtime: runpod_20260922
+    engine: density_q05
+    batching: fixed_chunks
+    search_scope: full_grid
+    anchor_storage: cpu
+    candidate_filter_sigma: 0.001
+    candidate_limit: 100
+    top_k: 0
+  density_qwen05b_gsm8k: {<<: *density_q05, dataset: density_gsm8k}
+  density_qwen05b_mbpp: {<<: *density_q05, dataset: density_mbpp}
+  density_qwen15b_countdown: &density_q15 {<<: *density_q05, model: qwen_1_5b, engine: density_q15}
+  density_qwen15b_gsm8k: {<<: *density_q15, dataset: density_gsm8k}
+  density_qwen15b_mbpp: {<<: *density_q15, dataset: density_mbpp}
+  density_qwen32b_countdown:
+    <<: *density_q05
+    model: qwen_32b
+    engine: density_q32
+    population_size: 1000
+    candidate_filter_sigma: null
+    candidate_limit: null
+    candidate_indices: [0, 1, 3, 4, 7, 11, 12, 13, 16, 20, 23, 24, 34, 36, 37, 38, 40, 41, 43, 45, 47, 48, 50, 52, 54, 55, 58, 59, 68, 70, 73, 77, 87, 88, 89, 93, 99, 104, 105, 106, 109, 111, 114, 116, 118, 119, 121, 127, 132, 134, 136, 137, 140, 141, 143, 144, 146, 148, 149, 151, 153, 154, 155, 158, 163, 164, 165, 166, 167, 172, 173, 176, 182, 186, 187, 188, 192, 196, 197, 202, 208, 212, 217, 218, 221, 223, 224, 227, 234, 239, 240, 242, 243, 246, 248, 250, 251, 253, 254, 259]
+    candidate_cohorts:
+      reused_wave4: [36, 119, 197, 250]
+      density_fill_20260922: [0, 1, 3, 4, 7, 11, 12, 13, 16, 20, 23, 24, 34, 37, 38, 40, 41, 43, 45, 47, 48, 50, 52, 54, 55, 58, 59, 68, 70, 73, 77, 87, 88, 89, 93, 99, 104, 105, 106, 109, 111, 114, 116, 118, 121, 127, 132, 134, 136, 137, 140, 141, 143, 144, 146, 148, 149, 151, 153, 154, 155, 158, 163, 164, 165, 166, 167, 172, 173, 176, 182, 186, 187, 188, 192, 196, 202, 208, 212, 217, 218, 221, 223, 224, 227, 234, 239, 240, 242, 243, 246, 248, 251, 253, 254, 259]
+
+  density_anchor_qwen05b_countdown: &density_anchor_q05
+    <<: *fresh_anchor
+    model: qwen_0_5b
+    additional_datasets: []
+    decode: sampled_anchor
+    engine: density_q05
+    repeat_seeds: [42]
+    samples_per_question: 100
+  density_anchor_qwen05b_gsm8k: {<<: *density_anchor_q05, dataset: density_gsm8k}
+  density_anchor_qwen05b_mbpp: {<<: *density_anchor_q05, dataset: density_mbpp}
+  density_anchor_qwen15b_countdown: &density_anchor_q15 {<<: *density_anchor_q05, model: qwen_1_5b, engine: density_q15}
+  density_anchor_qwen15b_gsm8k: {<<: *density_anchor_q15, dataset: density_gsm8k}
+  density_anchor_qwen15b_mbpp: {<<: *density_anchor_q15, dataset: density_mbpp}
+  density_anchor_olmo_countdown_topup:
+    <<: *density_anchor_q05
+    model: olmo_7b
+    dataset: countdown_primary
+    engine: density_olmo
+    repeat_seeds: [2026]
+    samples_per_question: 50
+
+  uspto_anchor_original:
+    <<: *fresh_anchor
+    dataset: uspto50k_primary
+    additional_datasets: []
+    runtime: chemistry_runpod
+    engine: chemistry_h200
+    batching: contiguous_worker_shard
+    repeat_seeds: [42]
+
+  uspto_shuffled_answers:
+    <<: *fresh_anchor
+    kind: label_shuffle
+    dataset: uspto50k_primary
+    additional_datasets: []
+    decode: greedy
+    runtime: chemistry_runpod
+    engine: chemistry_h200
+    batching: contiguous_worker_shard
+    semantics: paper_tied_exact
+    anchor_storage: same_device
+    top_k: 50
+    repeat_seeds: [42]
+    samples_per_question: 1
+    source_search: search_olmo_uspto50k
+    shuffle_seed: 20260922
