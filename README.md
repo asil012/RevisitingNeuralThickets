@@ -20,7 +20,7 @@
 
 </div>
 
-We study a curious question:
+We study a simple, somewhat curious question:
 
 > *Can pre-trained models be adapted to tasks through mere random search in weight space, rather than explicit post-training?*
 
@@ -93,20 +93,21 @@ paper.
 ## Acknowledgments
 
 We thank Yulu Gan and Phillip Isola for releasing
-[`sunrainyg/RandOpt`](https://github.com/sunrainyg/RandOpt). Apache-licensed
-components preserve their source headers, and their license is included in
-[`LICENSE-APACHE`](LICENSE-APACHE). We also thank the authors and maintainers of
-the models and datasets used in this audit, including OLMo, Qwen2.5, Countdown,
-GSM8K, MBPP, and USPTO-50K.
+[`sunrainyg/RandOpt`](https://github.com/sunrainyg/RandOpt). We also thank the 
+authors and maintainers of the models and datasets used in this audit, including 
+OLMo, Qwen2.5, Countdown, GSM8K, MBPP, and USPTO-50K.
 
 ## Citation
 
 ```bibtex
-@misc{asilis2026revisitingneural,
-  title  = {Does Random Search Discover Task Experts? Revisiting Neural Thickets},
-  author = {Julian Asilis and Guanzhe Hong and Vatsal Sharan},
-  year   = {2026},
-  note   = {Preprint}
+@misc{asilis2026doesrandomsearchdiscover,
+      title={Does Random Search Discover Task Experts? Revisiting Neural Thickets}, 
+      author={Julian Asilis and Guanzhe Hong and Vatsal Sharan},
+      year={2026},
+      eprint={2611.01262},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2611.01262}, 
 }
 ```
 
