@@ -3,22 +3,11 @@
     Does Random Search Discover Task Experts?<br>
     Revisiting Neural Thickets
   </h1>
-
-  <hr style="width: 60%; border: none; border-top: 2px solid #ccc; margin: 0 auto 20px auto;">
-
-  <a href="https://github.com/asil012/RevisitingNeuralThickets">
-    <img src="assets/headline.png" alt="Neural Thickets headline results" width="900">
-  </a>
+  <hr>
+  <img src="./assets/headline.png" alt="Neural Thickets headline results" width="900">
 </div>
 
-<div align="center">
-
-[![GitHub](https://img.shields.io/badge/GitHub-RevisitingNeuralThickets-181717?style=for-the-badge&logo=github)](https://github.com/asil012/RevisitingNeuralThickets)
-[![Reproduce](https://img.shields.io/badge/Reproduce-Paper-356FA8?style=for-the-badge)](#quick-start)
-[![Data](https://img.shields.io/badge/Data-CC_BY_4.0-3E8A63?style=for-the-badge)](data/)
-[![License](https://img.shields.io/badge/Code-MIT-D97932?style=for-the-badge)](LICENSE)
-
-</div>
+<br>
 
 We study a simple, somewhat curious question:
 
